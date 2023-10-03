@@ -1,0 +1,85 @@
+/**
+ * @file This is the main file of the application.
+ * @module index
+ */
+
+const discord = require("discord.js");
+
+/**
+ * Create a new Discord client with specified intents.
+ * @type {discord.Client}
+ */
+const client = new discord.Client({
+  intents: [
+    discord.GatewayIntentBits.Guilds,
+    discord.GatewayIntentBits.GuildMessages,
+    discord.GatewayIntentBits.GuildMessageReactions
+  ]
+});
+
+/**
+ * Event handler for when the client is ready.
+ */
+client.on("ready", () => {
+  console.log(`Logged in as ${client.user.tag}!`);
+});
+
+// Uncomment the line below to log all incoming messages
+// client.on('messageCreate', console.log);
+
+/**
+ * Split and combine an input string into chunks of maximum length 1000 characters.
+ * @param {string} inputString - The input string to split and combine.
+ * @returns {string[]} - An array of chunks.
+ */
+function splitAndCombine(inputString) {
+  const lines = inputString.split("\n");
+  const chunks = [];
+  let currentChunk = "";
+
+  for (const line of lines) {
+    const lineLength = line.length;
+
+    if (currentChunk.length + lineLength <= 1000) {
+      currentChunk += line + "\n";
+    } else {
+      chunks.push(currentChunk);
+      currentChunk = line + "\n";
+    }
+  }
+
+  if (currentChunk.length > 0) {
+    chunks.push(currentChunk);
+  }
+
+  return chunks;
+}
+
+/**
+ * Login the bot using the provided token.
+ */
+client.login(process.env.DISCORD_TOKEN);
+
+/**
+ * Export a function that sends a message in chunks to a specified channel.
+ * @param {Object} inp - The input object containing the channel and message.
+ * @param {string} inp.channel - The channel ID to send the message to.
+ * @param {string} inp.message - The message to send.
+ * @returns {Object} - The input object.
+ */
+module.exports = inp => {
+  console.log({
+    inp: inp
+  });
+  const {
+    channel,
+    message
+  } = inp;
+  const chunks = splitAndCombine(message);
+
+  chunks.forEach(message => {
+    client.channels.cache.get(channel).send(message);
+  });
+
+  return inp;
+};

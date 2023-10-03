@@ -1,0 +1,20 @@
+{
+  "name": "hypediscord",
+  "version": "0.2.3",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "release": "git commit -a -m ranrelease && npm version $(semver $npm_package_version -i patch) && npm publish --tag latest"
+  },
+  "bin": "run.js",
+  "author": "lanmower",
+  "license": "ISC",
+  "dependencies": {
+    "b4a": "^1.6.4",
+    "discord.js": "^14.13.0",
+    "dotenv": "^16.0.1",
+    "hypecall": "latest",
+    "hyper-ipc-secure": "^1.4.23",
+    "hypercore-crypto": "^3.4.0"
+  }
+}
