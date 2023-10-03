@@ -1,4 +1,4 @@
-/**
+#^index.js&^/**
  * @file This is the main file of the application.
  * @module index
  */
@@ -68,13 +68,8 @@ client.login(process.env.DISCORD_TOKEN);
  * @returns {Object} - The input object.
  */
 module.exports = inp => {
-  console.log({
-    inp: inp
-  });
-  const {
-    channel,
-    message
-  } = inp;
+  console.log({ inp: inp });
+  const { channel, message } = inp;
   const chunks = splitAndCombine(message);
 
   chunks.forEach(message => {
